@@ -19,6 +19,9 @@ export default function Home() {
           </li>
         </ul>
       </header>
+      <div className="bg-gray-300 mx-64 text-black rounded-3xl">
+        <h1 className="text-2xl pl-3">Login to your account:</h1>
+      </div>
     </main>
   );
 }
