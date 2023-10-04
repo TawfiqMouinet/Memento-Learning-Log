@@ -1,17 +1,19 @@
 "use client";
-import Header from "../components/header";
 import Loading from "./loading";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { createClient } from "@supabase/supabase-js";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Suspense, useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 library.add(faEye, faEyeSlash);
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+  const supabase = createClientComponentClient();
 
   const handleLogIn = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -50,7 +52,9 @@ export default function Login() {
               onClick={() => setShow(!show)}
             />
           </div>
-          <button type="button">Login</button>
+          <Link href=".." type="button" onClick={handleLogIn}>
+            Login
+          </Link>
         </div>
       </Suspense>
     </main>

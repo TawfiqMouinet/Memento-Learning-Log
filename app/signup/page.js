@@ -1,27 +1,24 @@
 "use client";
 import { Suspense, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-import Header from "../components/header";
 import Loading from "./loading";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 library.add(faEye, faEyeSlash);
 
 export default function SignUp() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [show, setShow] = useState(false);
+  const supabase = createClientComponentClient();
   const handleSign = async () => {
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
+        emailRedirectTo: "${location.origin}/auth/callback",
         data: {
           full_name: name,
         },
