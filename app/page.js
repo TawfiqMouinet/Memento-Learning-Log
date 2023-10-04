@@ -5,8 +5,7 @@ import Header from "./components/header";
 
 export default function Home() {
   return (
-    <main className="bg-gradient-to-b from-slate-800 to-slate-950 h-screen text-black">
-      <Header />
+    <main className="bg-inherit text-black">
       <section className="border flex-col bg-gray-300 mx-10 pb-5 rounded-xl">
         <h1 className=" text-6xl pt-8 pb-6 pl-5 pr-12">Track your learning.</h1>
         <p className="text-2xl pb-5 pl-10 pr-5 ">

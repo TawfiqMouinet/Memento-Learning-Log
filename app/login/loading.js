@@ -1,9 +1,9 @@
 export default function Loading() {
   return (
-    <div class="w-full h-full flex items-center justify-center">
+    <div class="h-screen grid place-items-center bg-gradient-to-b from-slate-800 to-slate-900">
       <svg
         aria-hidden="true"
-        class="w-20 h-20 text-white text-center animate-spin dark:text-gray-600 fill-slate-900"
+        class="w-20 h-20 text-slate-400 text-center animate-spin dark:text-slate-400 fill-slate-800"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

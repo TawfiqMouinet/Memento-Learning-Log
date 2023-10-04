@@ -30,9 +30,8 @@ export default function SignUp() {
   };
 
   return (
-    <main className="bg-gradient-to-b from-slate-800 to-slate-950 h-screen text-black">
+    <main className="text-black">
       <Suspense fallback={<Loading />}>
-        <Header />
         <div className="bg-gray-300 mx-64  flex flex-col items-center justify-center text-black rounded-3xl space-y-4">
           <h1 className="text-2xl  pl-3">Create your account:</h1>
           <form className="flex flex-col space-y-4 ">
