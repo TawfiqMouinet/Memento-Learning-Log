@@ -4,8 +4,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Suspense, useState } from "react";
-import { useRouter } from "next/router";
+import { Suspense, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 library.add(faEye, faEyeSlash);
 
@@ -14,6 +14,18 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const supabase = createClientComponentClient();
+  const router = useRouter();
+  const [isLogged, setIsLogged] = useState(false);
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event == "SIGNED_IN") setIsLogged(true);
+    else if (event == "SIGNED_OUT") setIsLogged(false);
+  });
+
+  useEffect(() => {
+    if (isLogged) {
+      router.push("./home");
+    }
+  }, [isLogged]);
 
   const handleLogIn = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -48,13 +60,13 @@ export default function Login() {
             />
             <FontAwesomeIcon
               icon={show ? "eye-slash" : "eye"}
-              className="scale-110 inline absolute left-52 inset-y-1 cursor-pointer"
+              className="scale-110 inline absolute left-48 inset-y-1 cursor-pointer"
               onClick={() => setShow(!show)}
             />
           </div>
-          <Link href=".." type="button" onClick={handleLogIn}>
+          <button type="button" onClick={handleLogIn}>
             Login
-          </Link>
+          </button>
         </div>
       </Suspense>
     </main>

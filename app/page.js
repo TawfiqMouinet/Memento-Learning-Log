@@ -3,7 +3,7 @@ import { GiBrain } from "react-icons/gi";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import Header from "./components/header";
 
-export default function Home() {
+export default function Landing() {
   return (
     <main className="bg-inherit text-black">
       <section className="border flex-col bg-gray-300 mx-10 pb-5 rounded-xl">

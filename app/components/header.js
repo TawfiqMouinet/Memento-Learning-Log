@@ -22,12 +22,22 @@ export default function Header() {
         Learning Log
       </Link>
       <ul className="flex">
-        <li className="bg-pale-slate mx-2 text-white rounded-2xl py-2 px-3 transition-all hover:translate-y-1 hover:scale-110 hover:bg-slate-50 hover:text-black duration 500">
-          <Link href="/login">Log-in</Link>
-        </li>
-        <li className="bg-pale-slate mx-2 text-white rounded-2xl py-2 px-2 transition-all hover:translate-y-1 hover:scale-110 hover:bg-slate-50 hover:text-black duration 500">
-          <Link href="/signup">Register</Link>
-        </li>
+        {!isLogged && (
+          <Link href="/login">
+            <li className="bg-pale-slate mx-2 text-white rounded-2xl py-2 px-3 transition-all hover:translate-y-1 hover:scale-110 hover:bg-slate-50 hover:text-black duration 500">
+              Log-in
+            </li>
+          </Link>
+        )}
+
+        {!isLogged && (
+          <Link href="/signup">
+            <li className="bg-pale-slate mx-2 text-white rounded-2xl py-2 px-2 transition-all hover:translate-y-1 hover:scale-110 hover:bg-slate-50 hover:text-black duration 500">
+              Register
+            </li>
+          </Link>
+        )}
+
         {isLogged && (
           <li className="bg-pale-slate mx-2 text-white rounded-2xl py-2 px-3 transition-all hover:translate-y-1 hover:scale-110 hover:bg-slate-50 hover:text-black duration 500">
             <button onClick={handleSignOut}>Sign Out</button>
