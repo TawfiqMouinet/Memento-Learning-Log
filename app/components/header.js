@@ -3,11 +3,14 @@ import Link from "next/link";
 import { GiBrain } from "react-icons/gi";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const supabase = createClientComponentClient();
+  const router = useRouter();
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
+    router.replace("../");
   };
   const [isLogged, setIsLogged] = useState(false);
   supabase.auth.onAuthStateChange((event, session) => {

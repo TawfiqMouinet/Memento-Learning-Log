@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { GiBrain } from "react-icons/gi";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
-import Header from "./components/header";
 
 export default function Landing() {
   return (

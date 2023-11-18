@@ -14,8 +14,8 @@ export default async function Entry({ params }) {
       <ul>
         {entries?.map((entry) => (
           <li>
-            <h1 className="text-xl mb-4">{entry.title}</h1>
-            <p>
+            <h1 className="text-xl mb-4 text-white">{entry.title}</h1>
+            <p className="text-white">
               {entry.text.length > 200
                 ? entry.text.substring(0, 200).concat("...")
                 : entry.text}
