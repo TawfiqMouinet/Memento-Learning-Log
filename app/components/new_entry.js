@@ -7,7 +7,6 @@ import { Textarea } from "@nextui-org/input";
 export default function NewEntry(topic) {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  console.log(topic.topic);
   const addEntry = async () => {
     const supabase = createClientComponentClient();
     await supabase

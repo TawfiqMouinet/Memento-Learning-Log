@@ -14,7 +14,6 @@ export default function Header() {
     const { error } = await supabase.auth.signOut();
     setIsLogged(false);
     router.replace("../");
-    console.log(isLogged);
   };
   const [isLogged, setIsLogged] = useState(false);
 
@@ -30,6 +29,7 @@ export default function Header() {
       setIsLogged(true);
     } else {
       setIsLogged(false);
+      router.replace("/");
     }
   }, [session]);
 

@@ -9,8 +9,6 @@ export default function NewTopic() {
     const supabase = createClientComponentClient();
     const { data: user } = await supabase.auth.getUser();
     const uuid = user.user.id;
-    console.log(uuid);
-    console.log(title);
     await supabase
       .from("topic")
       .insert({ title: title, user: uuid, number_of_entries: 0 });

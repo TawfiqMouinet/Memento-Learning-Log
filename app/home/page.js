@@ -51,7 +51,6 @@ export default function Home() {
     fetchRows();
   }, [reload]);
   useEffect(() => {
-    console.log(sortDescriptor.column, sortDescriptor.direction);
     setRows((prev) => {
       const sortedArray = sortByKey(
         prev,

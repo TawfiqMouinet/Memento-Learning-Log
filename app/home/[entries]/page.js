@@ -56,7 +56,6 @@ export default function Entry({ params }) {
   }, [reload]);
 
   useEffect(() => {
-    console.log(rows);
     setRows((prev) => {
       const sortedArray = sortByKey(
         prev,
