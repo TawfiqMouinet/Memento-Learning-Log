@@ -27,9 +27,9 @@ export default function SignUp() {
   };
 
   return (
-    <main className="text-black">
+    <main className="text-black flex flex_col justify-center">
       <Suspense fallback={<Loading />}>
-        <div className="bg-gray-300 mx-64  flex flex-col items-center justify-center text-black rounded-3xl space-y-4">
+        <div className="bg-gray-300 mx-64 w-96 h-96 flex flex-col items-center justify-center text-black rounded-3xl space-y-4">
           <h1 className="text-2xl  pl-3">Create your account:</h1>
           <form className="flex flex-col space-y-4 ">
             <label htmlFor="email" className="pt-4">
@@ -39,7 +39,7 @@ export default function SignUp() {
               type="text"
               name="email"
               onChange={(e) => setEmail(e.target.value)}
-              className="pl-1 rounded-xl"
+              className="pl-1 rounded-xl bg-white"
             />
             <label htmlFor="password" className="">
               Password:
@@ -49,7 +49,7 @@ export default function SignUp() {
                 type={show ? "text" : "password"}
                 name="password"
                 onChange={(e) => setPassword(e.target.value)}
-                className="pl-1 rounded-xl"
+                className="pl-1 rounded-xl bg-white"
               />
               <FontAwesomeIcon
                 icon={show ? "eye-slash" : "eye"}
@@ -64,9 +64,13 @@ export default function SignUp() {
               type="text"
               name="fullname"
               onChange={(e) => setName(e.target.value)}
-              className="pl-1 rounded-xl"
+              className="pl-1 rounded-xl bg-white"
             />
-            <button type="button" onClick={handleSign}>
+            <button
+              type="button"
+              onClick={handleSign}
+              className="text-xl rounded-3xl bg-black text-white py-2 transition-all hover:bg-white hover:translate-y-1 hover:scale-105 hover:text-black duration-500 "
+            >
               Register
             </button>
           </form>

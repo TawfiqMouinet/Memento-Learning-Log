@@ -1,46 +1,121 @@
-"use server";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+"use client";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
-import NewTable from "../components/table";
+import { useEffect, useState } from "react";
 import NewModal from "../components/modal";
 import { Button } from "@nextui-org/button";
 import NewTopic from "../components/new_topic";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  getKeyValue,
+} from "@nextui-org/table";
 
-export default async function Home() {
-  "use server";
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient({
-    cookies: () => cookieStore,
+export default function Home() {
+  const supabase = createClientComponentClient();
+  const [rows, setRows] = useState([]);
+  const [sortDescriptor, setSortDescriptor] = useState({
+    column: "number_of_entries",
+    direction: "ascending",
   });
-  const { data: topics } = await supabase.from("topic").select();
-  const rows = topics?.map((topic) => ({
-    key: topic.id,
-    title: topic.title,
-    num_of_entries: topic.number_of_entries,
-    created_at: topic.created_at.substring(0, 10),
-  }));
+  const [reload, setReload] = useState(false);
+  const sortByKey = (array, key, sortOrder = "ascending") => {
+    const compareFunction = (a, b) => {
+      if (a[key].toLowerCase() < b[key].toLowerCase()) {
+        return sortOrder === "ascending" ? -1 : 1;
+      } else if (a[key].toLowerCase() > b[key].toLowerCase()) {
+        return sortOrder === "ascending" ? 1 : -1;
+      } else {
+        return 0;
+      }
+    };
+
+    return array.slice().sort(compareFunction);
+  };
+  async function fetchRows() {
+    const { data } = await supabase.from("topic").select();
+    setRows(
+      data.map((topic) => ({
+        key: topic.id,
+        title: topic.title,
+        number_of_entries: topic.number_of_entries,
+        created_at: topic.created_at.substring(0, 10),
+      }))
+    );
+  }
+  useEffect(() => {
+    fetchRows();
+  }, [reload]);
+  useEffect(() => {
+    console.log(sortDescriptor.column, sortDescriptor.direction);
+    setRows((prev) => {
+      const sortedArray = sortByKey(
+        prev,
+        sortDescriptor.column,
+        sortDescriptor.direction
+      );
+      return sortedArray;
+    });
+  }, [sortDescriptor]);
 
   const columns = [
     {
-      key: "Topic",
+      key: "title",
       label: "TOPIC",
     },
     {
-      key: "Entries",
+      key: "number_of_entries",
       label: "ENTRIES",
     },
     {
-      key: "Date",
+      key: "created_at",
       label: "DATE",
     },
   ];
 
   return (
-    <main>
-      <NewTable rows={rows} columns={columns} />
+    <main className="flex flex-col items-center">
+      <Table
+        aria-label="Table of topics"
+        layout="auto"
+        isStriped={true}
+        fullWidth={true}
+        sortDescriptor={sortDescriptor}
+        onSortChange={setSortDescriptor}
+        className="w-2/3"
+        align="center"
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn key={column.key} allowsSorting>
+              {column.label}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody items={rows} emptyContent={"Create some topics first!"}>
+          {(item) => (
+            <TableRow key={item.key}>
+              {(columnKey) => (
+                <TableCell>
+                  {columnKey === "title" ? (
+                    <Link href={`/home/${item.key}`}>
+                      {getKeyValue(item, columnKey)}
+                    </Link>
+                  ) : (
+                    getKeyValue(item, columnKey)
+                  )}
+                </TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
       <NewModal
-        buttonText={"Add Topic"}
+        buttonText={"Topic"}
         modalHeader={"Create a new Topic"}
         modalContent={
           <div>
@@ -48,10 +123,17 @@ export default async function Home() {
           </div>
         }
         modalFooter={
-          <Button color="primary" form="topic" type="submit">
+          <Button
+            color="primary"
+            variant="flat"
+            form="topic"
+            type="submit"
+            onClick={() => setReload(true)}
+          >
             Add Topic
           </Button>
         }
+        size={"md"}
       />
     </main>
   );

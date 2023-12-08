@@ -2,21 +2,36 @@
 import Link from "next/link";
 import { GiBrain } from "react-icons/gi";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Header() {
   const supabase = createClientComponentClient();
   const router = useRouter();
+  const [session, setSession] = useState({});
+  const pathname = usePathname();
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
+    setIsLogged(false);
     router.replace("../");
+    console.log(isLogged);
   };
   const [isLogged, setIsLogged] = useState(false);
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (event == "SIGNED_IN") setIsLogged(true);
-    else if (event == "SIGNED_OUT") setIsLogged(false);
-  });
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      setSession((await supabase.auth.getSession()).data.session);
+    };
+    fetchSession();
+  }, [isLogged]);
+
+  useEffect(() => {
+    if (session != null) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, [session]);
 
   return (
     <header className="flex mb-5 justify-between px-2 py-5">
