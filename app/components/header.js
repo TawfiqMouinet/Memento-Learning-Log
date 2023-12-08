@@ -37,7 +37,7 @@ export default function Header() {
     <header className="flex mb-5 justify-between px-2 py-5">
       <Link href="../" className="flex pl-2 text-2xl font-break text-white">
         <GiBrain className="text-3xl mr-2" />
-        Learning Log
+        Memento
       </Link>
       <ul className="flex">
         {!isLogged && (
