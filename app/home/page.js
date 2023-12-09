@@ -19,7 +19,7 @@ export default function Home() {
   const supabase = createClientComponentClient();
   const [rows, setRows] = useState([]);
   const [sortDescriptor, setSortDescriptor] = useState({
-    column: "number_of_entries",
+    column: "title",
     direction: "ascending",
   });
   const [reload, setReload] = useState(false);
@@ -42,7 +42,7 @@ export default function Home() {
       data.map((topic) => ({
         key: topic.id,
         title: topic.title,
-        number_of_entries: topic.number_of_entries,
+        number_of_entries: topic.number_of_entries.toString(),
         created_at: topic.created_at.substring(0, 10),
       }))
     );

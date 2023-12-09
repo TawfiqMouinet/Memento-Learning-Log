@@ -4,7 +4,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 library.add(faEye, faEyeSlash);
 
@@ -20,9 +20,11 @@ export default function Login() {
     else if (event == "SIGNED_OUT") setIsLogged(false);
   });
 
-  if (isLogged) {
-    router.push("./home");
-  }
+  useEffect(() => {
+    if (isLogged) {
+      router.push("/home");
+    }
+  }, [isLogged]);
 
   const handleLogIn = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({

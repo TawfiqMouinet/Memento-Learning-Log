@@ -4,7 +4,7 @@ import { BsFillArrowRightCircleFill } from "react-icons/bs";
 export default function Landing() {
   return (
     <main className="bg-inherit text-black">
-      <section className="border flex-col bg-gray-300 mx-10 pb-5 rounded-xl">
+      <section className="border mx-10 mt-14 bg-gray-300 pb-5 rounded-xl">
         <h1 className=" text-6xl pt-8 pb-6 pl-5 pr-12">Track your learning.</h1>
         <p className="text-2xl pb-5 pl-10 pr-5 ">
           Make your own learning log, and keep a list of the topics you're

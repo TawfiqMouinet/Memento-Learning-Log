@@ -8,30 +8,35 @@ import { useRouter, usePathname } from "next/navigation";
 export default function Header() {
   const supabase = createClientComponentClient();
   const router = useRouter();
-  const [session, setSession] = useState({});
   const pathname = usePathname();
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    setIsLogged(false);
-    router.replace("../");
-  };
+  const [user, setUser] = useState();
   const [isLogged, setIsLogged] = useState(false);
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      setSession((await supabase.auth.getSession()).data.session);
-    };
-    fetchSession();
-  }, [isLogged]);
+  supabase.auth.onAuthStateChange((event) => {
+    if (event == "SIGNED_IN") setIsLogged(true);
+    else if (event == "SIGNED_OUT") setIsLogged(false);
+  });
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    router.replace("/");
+  };
+
+  const checkLogged = () => {
+    if (user == null) {
+      if (pathname.includes("home")) router.replace("/");
+    }
+  };
 
   useEffect(() => {
-    if (session != null) {
-      setIsLogged(true);
-    } else {
-      setIsLogged(false);
-      router.replace("/");
+    async function fetchUser() {
+      const user_prom = await supabase.auth.getUser();
+      setUser(user_prom.data.user);
     }
-  }, [session]);
+    fetchUser();
+    console.log(user);
+    checkLogged();
+  }, [isLogged]);
 
   return (
     <header className="flex mb-5 justify-between px-2 py-5">
@@ -40,7 +45,7 @@ export default function Header() {
         Memento
       </Link>
       <ul className="flex">
-        {!isLogged && (
+        {user == null && (
           <Link href="/login">
             <li className="bg-pale-slate mx-2 text-white rounded-2xl py-2 px-3 transition-all hover:translate-y-1 hover:scale-110 hover:bg-slate-50 hover:text-black duration 500">
               Log-in
@@ -48,7 +53,7 @@ export default function Header() {
           </Link>
         )}
 
-        {!isLogged && (
+        {user == null && (
           <Link href="/signup">
             <li className="bg-pale-slate mx-2 text-white rounded-2xl py-2 px-2 transition-all hover:translate-y-1 hover:scale-110 hover:bg-slate-50 hover:text-black duration 500">
               Register
@@ -56,7 +61,7 @@ export default function Header() {
           </Link>
         )}
 
-        {isLogged && (
+        {user != null && (
           <li className="bg-pale-slate mx-2 text-white rounded-2xl py-2 px-3 transition-all hover:translate-y-1 hover:scale-110 hover:bg-slate-50 hover:text-black duration 500">
             <button onClick={handleSignOut}>Sign Out</button>
           </li>
