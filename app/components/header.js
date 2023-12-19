@@ -34,7 +34,6 @@ export default function Header() {
       setUser(user_prom.data.user);
     }
     fetchUser();
-    console.log(user);
     checkLogged();
   }, [isLogged]);
 

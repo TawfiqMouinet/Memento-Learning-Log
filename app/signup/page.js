@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 library.add(faEye, faEyeSlash);
 
 export default function SignUp() {
@@ -12,18 +13,21 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [show, setShow] = useState(false);
+  const router = useRouter();
   const supabase = createClientComponentClient();
   const handleSign = async () => {
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
-        emailRedirectTo: "${location.origin}/auth/callback",
+        emailRedirectTo: `${location.origin}`,
         data: {
           full_name: name,
         },
       },
     });
+    console.log(name);
+    router.refresh();
   };
 
   return (

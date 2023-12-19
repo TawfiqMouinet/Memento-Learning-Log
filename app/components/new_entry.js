@@ -7,11 +7,12 @@ import { Textarea } from "@nextui-org/input";
 export default function NewEntry(topic) {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const supabase = createClientComponentClient();
   const addEntry = async () => {
-    const supabase = createClientComponentClient();
+    console.log(await supabase.auth.getUser());
     await supabase
       .from("entry")
-      .insert({ title: title, text: text, topic: topic.topic });
+      .insert({ title: title, text: text, topic: parseInt(topic.topic) });
   };
   return (
     <form onSubmit={addEntry} id="entry">
